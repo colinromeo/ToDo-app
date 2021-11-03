@@ -1,7 +1,20 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProductsList } from '../../store/slices/productsSlice';
 
 const Product = ({navigation}) => {
+    const dispatch = useDispatch({});
+    const { products } = useSelector((state) => state.product);
+    console.log("products==",products)
+    useEffect(() => {
+        fetchProduct()
+    },[])
+
+    const fetchProduct = async() => {
+        await dispatch(fetchProductsList())
+    }
+
     return (
         <View style={styles.container}>
             <Pressable onPress={() => navigation.navigate('Details')} style={styles.card}>
