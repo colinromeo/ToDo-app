@@ -1,5 +1,4 @@
 import React,{useState, useEffect} from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text, TouchableOpacity, TextInput,StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Card from '../components/Card';
@@ -17,7 +16,7 @@ function todo() {
     const [isEdit, setIsEdit] = useState(false)
     const [editValue, setEditValue] = useState('')
     const [indexValue, setIndexValue] = useState('')
-    console.log(isEdit,editValue)
+    //console.log(isEdit,editValue)
 
     const validationSchema = yup.object({
         todoList: yup.string().required("This field is required"),
@@ -90,21 +89,6 @@ function todo() {
     )
 }
 
-const Stack = createNativeStackNavigator();
-
-const MainStack = () => {
-
-    return(
-        <Stack.Navigator>
-            <Stack.Screen name="Todo" component={todo} 
-                options={{headerStyle: {
-                    backgroundColor: "#4588cc"
-                }}}
-            />
-        </Stack.Navigator>
-    )
-}
-
 const styles = StyleSheet.create({
     container: {
       flex:1
@@ -147,4 +131,4 @@ const styles = StyleSheet.create({
     
   })
 
-  export default MainStack;
+export default todo;
