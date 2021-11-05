@@ -1,13 +1,36 @@
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
-import { fetchSingleProduct } from '../../store/slices/productsSlice';
+import { addToCart, fetchSingleProduct } from '../../store/slices/productsSlice';
 import { useDispatch, useSelector } from "react-redux";
+import Icon from 'react-native-vector-icons/Ionicons';
+import * as _ from "lodash";
 
-const ProductDetails = ({item}) => {
+const ProductDetails = ({navigation, item}) => {
     const dispatch = useDispatch({});
-    const { singleProduct } = useSelector((state) => state.product);
-    console.log("singleProduct==",singleProduct)
+    const { singleProduct, cart } = useSelector((state) => state.product);
+    const [isAvailable, setIsAvailable] = useState(false)
+    console.log("singleProduct====",cart)
     
+    const addCart = async() => {
+        // console.log("cart press====")
+        if (isAvailable){
+            navigation.navigate('Cart')
+        }else{
+            await dispatch(addToCart(singleProduct))
+            navigation.navigate('Cart')
+        }
+        
+    }
+
+    
+
+    useEffect(()=>{
+        if (_.find(cart, { id: singleProduct?.id})) {
+            setIsAvailable(true)
+        }else{
+            setIsAvailable(false)
+        }
+    },[])
 
     return (
         <View style={styles.container}>
@@ -16,12 +39,21 @@ const ProductDetails = ({item}) => {
                 source={{uri:singleProduct?.image}}
                 resizeMode={"cover"}
             />
+            <Pressable onPress={()=>navigation.goBack()} style={styles.iconcontainer}>
+                    <Icon name='chevron-back' size={25} />
+            </Pressable>
             <Text style={styles.caption}>{singleProduct?.title}</Text>
             <Text>{singleProduct?.category}</Text>
             <Text style={styles.price}>$ {singleProduct?.price}</Text>
             <Text style={styles.des}>Description</Text>
             <Text>{singleProduct?.description}</Text>
-            <Pressable style={styles.btn}><Text style={styles.btntext}>Add To Cart</Text></Pressable>
+            <Pressable onPress={addCart} style={styles.btn}>
+                {isAvailable ? (
+                    <Text style={styles.btntext}>Go To Cart</Text>
+                ) : (
+                    <Text style={styles.btntext}>Add To Cart</Text>
+                )} 
+            </Pressable>
         </View>
     )
 }
@@ -61,6 +93,16 @@ const styles = StyleSheet.create({
     btntext: {
         color: '#fff',
         fontWeight: '600',
+    },
+    iconcontainer: {
+        backgroundColor: '#fff',
+        height: 30,
+        width:30,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        margin: 20
     }
 })
 

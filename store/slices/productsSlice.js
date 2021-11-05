@@ -4,7 +4,8 @@ import {getAxiosInstance} from '../../src/apis/apis';
 const initialState = {
   products: [],
   status:"",
-  singleProduct:null
+  singleProduct:null,
+  cart: []
 };
 
 export const fetchProductsList = createAsyncThunk(
@@ -41,7 +42,13 @@ export const fetchSingleProduct = createAsyncThunk(
 const productSlice = createSlice({
   name: 'product',
   initialState,
-  reducers: {},
+  reducers: {
+    addToCart: (state, action) => {
+      state.cart.push(action?.payload)
+      console.log("state===", state.cart)
+      
+    }
+  },
   extraReducers: {
     [fetchProductsList.pending]: (state, action) => {
         state.status="pending"
@@ -70,4 +77,5 @@ const productSlice = createSlice({
   },
 });
 
+export const {addToCart} = productSlice.actions;
 export default productSlice.reducer;

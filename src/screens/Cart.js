@@ -1,23 +1,31 @@
 import React from 'react'
-import { View, Text, Pressable } from 'react-native'
+import { View, FlatList,StyleSheet } from 'react-native'
+import { useSelector } from 'react-redux';
+import ProductItems from '../components/ProductItems';
 
-const Cart = () => {
+
+
+const Cart = ({navigation}) => {
+    const { singleProduct, cart } = useSelector((state) => state.product);
     return (
-        <Pressable  style={styles.card}>
-            <Image 
-                style={styles.productImage}  
-                source={{uri:item?.image}}
-                resizeMode={"cover"}
-            />
-            <View style= {styles.cardtxt}>
-                <Text>{item?.category}</Text>
-                <Text numberOfLines={2} style={styles.productCaption}>{item?.title}</Text>
-                <Text>Rating {item?.rating?.rate}/5</Text>
-                <Text style={styles.price}>$ {item?.price}</Text>
-            </View>
+        <View style={styles.container}>
+
+            <FlatList 
+                data={cart}
+                keyExtractor={(item, index) => index.toString}
+                renderItem={({ item, index }) => <ProductItems navigation={navigation} item={item} index={index} 
                 
-        </Pressable>
+                />}
+            />
+        </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    
+})
 
 export default Cart

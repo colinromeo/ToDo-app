@@ -15,7 +15,6 @@ const MainStack = () => {
     return(
         <Stack.Navigator initialRouteName="MyTab" screenOptions={{headerShown:false}}>
             <Stack.Screen name="MyTab" component={MyTabs} />
-           
             <Stack.Screen name="Details" component={ProductDetails} />
         </Stack.Navigator>
     )

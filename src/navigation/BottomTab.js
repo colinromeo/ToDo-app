@@ -4,9 +4,12 @@ import todo from '../screens/ToDo';
 import Product from '../screens/Product';
 import Cart from '../screens/Cart';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useSelector } from 'react-redux';
+
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
+  const { singleProduct, cart } = useSelector((state) => state.product);
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -39,6 +42,7 @@ function MyTabs() {
           tabBarIcon: ({color, size}) => (
             <Icon name="shopping-cart" color={color} size={size} />
           ),
+          tabBarBadge: cart?.length
         }}
       />
     </Tab.Navigator>
