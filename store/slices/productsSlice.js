@@ -1,5 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {getAxiosInstance} from '../../src/apis/apis';
+import {getAxiosInstance} from '../../src/apis/apis'; 
+import * as _ from 'lodash'
 
 const initialState = {
   products: [],
@@ -45,8 +46,13 @@ const productSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       state.cart.push(action?.payload)
-      console.log("state===", state.cart)
-      
+    },
+    removeFromCart: (state, action) => {
+      state.cart=_.remove(state.cart, function(item){
+        return item.id !=action.payload
+      })
+      console.log("state===", action)
+
     }
   },
   extraReducers: {
@@ -77,5 +83,5 @@ const productSlice = createSlice({
   },
 });
 
-export const {addToCart} = productSlice.actions;
+export const {addToCart, removeFromCart} = productSlice.actions;
 export default productSlice.reducer;

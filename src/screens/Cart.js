@@ -13,8 +13,7 @@ const Cart = ({navigation}) => {
             <FlatList 
                 data={cart}
                 keyExtractor={(item, index) => index.toString}
-                renderItem={({ item, index }) => <ProductItems navigation={navigation} item={item} index={index} 
-                
+                renderItem={({ item, index }) => <ProductItems navigation={navigation} cartFlag={true} item={item} index={index}
                 />}
             />
         </View>

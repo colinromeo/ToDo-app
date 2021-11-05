@@ -1,12 +1,28 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Image, Pressable, Alert } from 'react-native'
 import { useDispatch } from 'react-redux';
-import { fetchSingleProduct } from '../../store/slices/productsSlice';
+import { fetchSingleProduct, removeFromCart } from '../../store/slices/productsSlice';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-const ProductItems = ({ navigation, item }) => {
+const ProductItems = ({ navigation, item, cartFlag=false }) => {
 
     const dispatch = useDispatch({});
+    
+    const showAlert=()=> {  
+        Alert.alert(  
+            'Warning',  
+            'Do want to remove item from cart?',  
+            [  
+                {  
+                    text: 'Cancel',  
+                    onPress: () => console.log('Cancel Pressed'),  
+                    style: 'cancel',  
+                },  
+                {text: 'OK', onPress: ()=>{dispatch(removeFromCart(item?.id))}},  
+            ]  
+        );  
+    }  
 
     const gotoDetails = async(data) => {
       const resultAction =  await dispatch(fetchSingleProduct({id:data}))
@@ -30,7 +46,12 @@ const ProductItems = ({ navigation, item }) => {
                 <Text>Rating {item?.rating?.rate}/5</Text>
                 <Text style={styles.price}>$ {item?.price}</Text>
             </View>
-                
+            {cartFlag &&
+            <Pressable onPress={showAlert} style={styles.iconcontainer}>
+                <Icon name='close-circle' size={25} color='#a01020' />
+            </Pressable>
+            }
+            
         </Pressable>
     )
 }
@@ -53,8 +74,8 @@ const styles= StyleSheet.create({
     cardtxt: {
         alignItems: 'flex-start',
         justifyContent: 'space-evenly',
-        paddingRight: 30,
-        width: '70%'
+        paddingRight: 2,
+        width: '55%'
     },
     productCaption: {
         color: '#333',
@@ -66,6 +87,10 @@ const styles= StyleSheet.create({
         fontWeight: '700',
         color: '#444',
         fontSize: 18
+    },
+    iconcontainer:{
+        alignSelf: 'flex-start',
+
     }
 })
 
