@@ -13,7 +13,7 @@ function MyTabs() {
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
       }}
-      tabBarOptions={{showLabel: false}}>
+      >
       <Tab.Screen
         name="Home"
         component={todo}

@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 const MainStack = () => {
 
     return(
-        <Stack.Navigator screenOptions={{headerShown:false}}>
+        <Stack.Navigator initialRouteName="MyTab" screenOptions={{headerShown:false}}>
             <Stack.Screen name="MyTab" component={MyTabs} />
            
             <Stack.Screen name="Details" component={ProductDetails} />

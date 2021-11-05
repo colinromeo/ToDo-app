@@ -3,7 +3,8 @@ import {getAxiosInstance} from '../../src/apis/apis';
 
 const initialState = {
   products: [],
-  status:""
+  status:"",
+  singleProduct:null
 };
 
 export const fetchProductsList = createAsyncThunk(
@@ -21,6 +22,22 @@ export const fetchProductsList = createAsyncThunk(
   },
 );
 
+export const fetchSingleProduct = createAsyncThunk(
+  'product/fetchSingleProduct',
+  async (params, {rejectWithValue}) => {
+    const api = await getAxiosInstance();
+    try {
+      const response = await api.get(`/products/${params?.id}`);
+      
+      return response;
+    } catch (error) {
+      
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+
 const productSlice = createSlice({
   name: 'product',
   initialState,
@@ -36,6 +53,18 @@ const productSlice = createSlice({
         state.products=action?.payload?.data;
     },
     [fetchProductsList.rejected]: (state, action) => {
+        state.status="failed"
+    },
+    [fetchSingleProduct.pending]: (state, action) => {
+      state.status="pending"
+      state.singleProduct=[];
+    },
+    [fetchSingleProduct.fulfilled]: (state, action) => {
+        state.status="success"
+        // console.log("success==",action)
+        state.singleProduct=action?.payload?.data;
+    },
+    [fetchSingleProduct.rejected]: (state, action) => {
         state.status="failed"
     },
   },

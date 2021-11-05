@@ -1,21 +1,26 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
+import { fetchSingleProduct } from '../../store/slices/productsSlice';
+import { useDispatch, useSelector } from "react-redux";
 
-const ProductDetails = () => {
+const ProductDetails = ({item}) => {
+    const dispatch = useDispatch({});
+    const { singleProduct } = useSelector((state) => state.product);
+    console.log("singleProduct==",singleProduct)
+    
+
     return (
         <View style={styles.container}>
             <Image 
                 style={styles.productImage}  
-                source={require('../assets/images/homedecorationpot.jpg')}
+                source={{uri:singleProduct?.image}}
+                resizeMode={"cover"}
             />
-            <Text style={styles.caption}>Home Decoration Pot</Text>
-            <Text>by Jarvis Pepperspray</Text>
-            <Text style={styles.price}>$125.00</Text>
+            <Text style={styles.caption}>{singleProduct?.title}</Text>
+            <Text>{singleProduct?.category}</Text>
+            <Text style={styles.price}>$ {singleProduct?.price}</Text>
             <Text style={styles.des}>Description</Text>
-            <Text>Fingers are not the most precise instruments, 
-                and it is common for users to accidentally activate 
-                the wrong element or miss the activation area. To help, 
-            </Text>
+            <Text>{singleProduct?.description}</Text>
             <Pressable style={styles.btn}><Text style={styles.btntext}>Add To Cart</Text></Pressable>
         </View>
     )
@@ -27,7 +32,7 @@ const styles = StyleSheet.create({
         padding: 15
     },
     productImage: {
-        height: 350,
+        height: '45%',
         width: '100%'
     },
     caption: {

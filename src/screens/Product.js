@@ -1,7 +1,8 @@
 import React,{useEffect} from 'react'
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Pressable, } from 'react-native'
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductsList } from '../../store/slices/productsSlice';
+import ProductItems from '../components/ProductItems';
 
 const Product = ({navigation}) => {
     const dispatch = useDispatch({});
@@ -17,19 +18,14 @@ const Product = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <Pressable onPress={() => navigation.navigate('Details')} style={styles.card}>
-                <Image 
-                    style={styles.productImage}  
-                    source={require('../assets/images/homedecorationpot.jpg')}
-                />
-                <View style= {styles.cardtxt}>
-                    <Text>Categories</Text>
-                    <Text numberOfLines={2} style={styles.productCaption}>Home Decoration Pot</Text>
-                    <Text>Rating 4/5</Text>
-                    <Text style={styles.price}>$ 15.00</Text>
-                </View>
+
+            <FlatList 
+                data={products}
+                keyExtractor={(item, index) => index.toString}
+                renderItem={({ item, index }) => <ProductItems navigation={navigation} item={item} index={index} 
                 
-            </Pressable>
+                />}
+            />
         </View>
     )
 }
@@ -38,36 +34,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    card: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        elevation: 5,
-        margin: 10,
-        backgroundColor: 'white',
-        borderRadius:5,
-        padding: 5
-    },
-    productImage: {
-        height: 140,
-        width: 140
-    },
-    cardtxt: {
-        alignItems: 'flex-start',
-        justifyContent: 'space-evenly',
-        paddingRight: 30,
-        width: '70%'
-    },
-    productCaption: {
-        color: '#333',
-        fontSize: 18,
-        width: '90%',
-        fontWeight: '600'
-    },
-    price: {
-        fontWeight: '700',
-        color: '#444',
-        fontSize: 16
-    }
+    
 })
 
 export default Product
