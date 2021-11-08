@@ -6,6 +6,7 @@ import Cart from '../screens/Cart';
 import MyTabs from './BottomTab';
 import todo from '../screens/ToDo';
 import ProductDetails from '../screens/ProductDetails';
+import MovieDetails from '../screens/MovieDetails';
 
 
 const Stack = createNativeStackNavigator();
@@ -16,6 +17,7 @@ const MainStack = () => {
         <Stack.Navigator initialRouteName="MyTab" screenOptions={{headerShown:false}}>
             <Stack.Screen name="MyTab" component={MyTabs} />
             <Stack.Screen name="Details" component={ProductDetails} />
+            <Stack.Screen name="MovieDetails" component={MovieDetails} />
         </Stack.Navigator>
     )
 }

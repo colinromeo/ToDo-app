@@ -5,6 +5,7 @@ import Product from '../screens/Product';
 import Cart from '../screens/Cart';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useSelector } from 'react-redux';
+import Movies from '../screens/Movies';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,6 +44,16 @@ function MyTabs() {
             <Icon name="shopping-cart" color={color} size={size} />
           ),
           tabBarBadge: cart?.length
+        }}
+      />
+      <Tab.Screen
+        name="Movies"
+        component={Movies}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Icon name="film" color={color} size={size} />
+          ),
+          headerShown: false
         }}
       />
     </Tab.Navigator>
