@@ -1,10 +1,17 @@
 import React from 'react'
 import { View, Text, StyleSheet, Pressable , Image} from 'react-native'
+import { fetchCategoryDetails } from '../../store/slices/movieSlice'
 
-const PopularCard = ({navigation}) => {
+
+let img_url = 'https://image.tmdb.org/t/p/w200'
+
+const PopularCard = ({navigation, item}) => {
+// console.log('popular===',item)
+    
     return (
-        <Pressable onPress={()=>navigation.navigate('MovieDetails') }>
-            <Image style={styles.poster} source={require('../assets/images/movieposter.jpg')} />
+        <Pressable onPress={()=> navigation.navigate('MovieDetails') }>
+            <Image style={styles.poster} source={{uri: img_url+item?.poster_path}} />
+            {/* <Image style={styles.poster} source={require('../assets/images/moonlight.jpg')} /> */}
         </Pressable>
     )
 }

@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     iconcontainer: {
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff88',
         height: 30,
         width:30,
         borderRadius: 20,

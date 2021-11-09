@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, ScrollView, Image, StyleSheet, ImageBackground, FlatList } from 'react-native'
+import { View, Text, ScrollView, Image, StyleSheet, Pressable, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import Cast from '../components/Cast'
 
@@ -22,10 +22,13 @@ const DATA = [
       },
   ];
 
-const MovieDetails = () => {
+const MovieDetails = ({navigation}) => {
     return (
         <ScrollView style={styles.container}>
             <Image style={styles.wallpaper} source={require('../assets/images/movieposter.jpg')}/>
+            <Pressable onPress={()=>navigation.goBack()} style={styles.iconcontainer}>
+                <Icon name='chevron-back' size={25} />
+            </Pressable>
             <View style={styles.head}>
                 <Image style={styles.cardImage} source={require('../assets/images/moonlight.jpg')} />
                 <View>
@@ -93,6 +96,16 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginVertical: 15,
         color: '#000',
+    },
+    iconcontainer: {
+        backgroundColor: '#ffffff50',
+        height: 30,
+        width:30,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        margin: 20
     }
 })
 
