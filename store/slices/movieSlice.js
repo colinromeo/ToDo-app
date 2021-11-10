@@ -57,7 +57,7 @@ export const fetchMovieCategories = createAsyncThunk(
     async (params, {rejectWithValue}) => {
       const api = await getMovieAxiosInstance();
       try {
-        const response = await api.get(`/movie/${params?.id}`);
+        const response = await api.get(`/movie/${params?.id}?api_key=c232583a145f7b36e8e9e470b9be9c84`);
         
         return response;
       } catch (error) {
@@ -112,6 +112,7 @@ const movieSlice = createSlice({
         [fetchMovieDetails.fulfilled]: (state, action) => {
             state.status="success"
             // console.log("success==",action);
+            state.movieDetails=action?.payload?.data;
         },
         [fetchMovieDetails.rejected]: (state, action) => {
             state.status="failed"

@@ -9,7 +9,7 @@ const List = ({category, navigation}) => {
   const {movieDetail} = useSelector(state => state.movie);
 
   const [movieCategory, setMovieCategory] = useState([]);
-//   console.log('products==', category, movieCategory);
+  //   console.log('products==', category, movieCategory);
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -33,19 +33,15 @@ const List = ({category, navigation}) => {
     return <PopularCard navigation={navigation} item={item} />;
   };
 
-  //   const getDetails = async(data) => {
-  //     const resultAction =  await dispatch(fetchCategoryDetails({id:data}))
-  //     if(fetchCategoryDetails.fulfilled.match(resultAction)){
-  //       navigation.navigate('MovieDetails')
-  //     }else{
-  //         console.log("error in api")
-  //     }
-  //   }
-
   return (
     <View>
       <Text style={styles.heading2}>{category?.name}</Text>
-      <FlatList horizontal={true} data={movieCategory} renderItem={Popular} />
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={movieCategory}
+        renderItem={Popular}
+      />
     </View>
   );
 };

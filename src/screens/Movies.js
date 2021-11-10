@@ -11,20 +11,18 @@ import {
   Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {fetchMovieCategories, fetchNowPlayingMovies} from '../../store/slices/movieSlice';
+import {
+  fetchMovieCategories,
+  fetchNowPlayingMovies,
+} from '../../store/slices/movieSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import List from '../components/List';
 import MovieCard from '../components/MovieCard';
 
-
-const image = {
-  uri: 'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/movie-poster-template-design-21a1c803fe4ff4b858de24f5c91ec57f_screen.jpg?ts=1574144362',
-};
-
 const Movies = ({navigation}) => {
   const dispatch = useDispatch({});
   const {movieCategories, nowPlaying} = useSelector(state => state.movie);
-  console.log('products==', nowPlaying);
+  // console.log('products==', nowPlaying);
   useEffect(() => {
     fetchMovie();
   }, []);
@@ -42,7 +40,7 @@ const Movies = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={image}
+        source={require('../assets/images/moonlight.jpg')}
         resizeMode="cover"
         blurRadius={5}
         style={styles.image}>
@@ -56,7 +54,7 @@ const Movies = ({navigation}) => {
             <Icon name="search" size={30} color="#ccc" />
           </Pressable>
         </View>
-        <ScrollView style={styles.select}>
+        <ScrollView style={styles.select} showsVerticalScrollIndicator={false}>
           <Text style={styles.heading}>Now Playing</Text>
           <FlatList
             horizontal={true}
@@ -93,6 +91,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '55%',
+
     flex: 1,
   },
   searchbar: {

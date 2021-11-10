@@ -1,11 +1,13 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 
-const Cast = () => {
+let img_url = 'https://image.tmdb.org/t/p/w200'
+
+const Cast = ({item}) => {
     return (
         <View style={styles.root}>
-            <Image style={styles.img} source={require('../assets/images/ridley.jpg')}/>
-            <Text style={styles.name}>Daisy Ridly</Text>
+            <Image resizeMode={'contain'} style={styles.img} source={{uri: img_url+item?.logo_path}}/>
+            <Text style={styles.name}>{item?.name}</Text>
         </View>
     )
 }
@@ -14,12 +16,13 @@ const styles = StyleSheet.create({
     root: {
         flex: 1,
         justifyContent: 'center',
-        paddingRight: 20
+        paddingRight: 20,
+        alignItems: 'center'
     },
     img: {
-        width: 70,
+        width: 90,
         height: 70,
-        borderRadius: 35
+
     },
     name: {
         fontSize: 14,

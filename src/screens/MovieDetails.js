@@ -1,112 +1,142 @@
-import React from 'react'
-import { View, Text, ScrollView, Image, StyleSheet, Pressable, FlatList } from 'react-native'
+import React, {useEffect} from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  StyleSheet,
+  Pressable,
+  FlatList,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Cast from '../components/Cast'
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchMovieDetails} from '../../store/slices/movieSlice';
+import Cast from '../components/Cast';
 
-const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d80',
-        title: 'Forth Item',
-      },
-  ];
+let img_url = 'https://image.tmdb.org/t/p/w200';
+let img_back_url = 'https://image.tmdb.org/t/p/w500';
 
 const MovieDetails = ({navigation}) => {
-    return (
-        <ScrollView style={styles.container}>
-            <Image style={styles.wallpaper} source={require('../assets/images/movieposter.jpg')}/>
-            <Pressable onPress={()=>navigation.goBack()} style={styles.iconcontainer}>
-                <Icon name='chevron-back' size={25} />
-            </Pressable>
-            <View style={styles.head}>
-                <Image style={styles.cardImage} source={require('../assets/images/moonlight.jpg')} />
-                <View>
-                    <Text style={styles.title} numberOfLines={2}>Star Wars: The Rise of Skywalker (2019</Text>
-                    <View style={{flexDirection:'row'}}>
-                        <Icon name='calendar' size={25} />
-                        <Text>date</Text>
-                    </View>
-                </View>
-               
-            </View>
-            <View style={styles.details}>
-                <Text style={styles.heading}>OverView</Text>
-                <Text>Well I think it is evident you are not including everything 
-                    in the photos page. Please update your code with all of the code 
-                    from both files so we can see what is missing.
-                </Text>
-                <Text style={styles.heading}>Top Billed Cast</Text>
-                <FlatList horizontal={true} 
-                data={DATA}
-                    renderItem={()=><Cast />}
-                />
-            </View>
-        </ScrollView>
-    )
-}
+  const dispatch = useDispatch({});
+  const {movieDetails} = useSelector(state => state.movie);
+  console.log('movieDetails===', movieDetails);
+
+  useEffect(() => {
+    fetchSingleMovie();
+  }, []);
+
+  const fetchSingleMovie = async () => {
+    await dispatch(fetchMovieDetails(payload));
+  };
+
+  return (
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <Image
+        style={styles.wallpaper}
+        source={{uri: img_back_url + movieDetails?.backdrop_path}}
+      />
+      <Pressable
+        onPress={() => navigation.goBack()}
+        style={styles.iconcontainer}>
+        <Icon name="chevron-back" size={25} />
+      </Pressable>
+      <View style={styles.head}>
+        {/* <Image style={styles.cardImage} source={require('../assets/images/moonlight.jpg')} /> */}
+        <Image
+          style={styles.cardImage}
+          source={{uri: img_url + movieDetails?.poster_path}}
+        />
+        <View>
+          <Text style={styles.title} numberOfLines={2}>
+            {movieDetails?.original_title}
+          </Text>
+          <View
+            style={{flexDirection: 'row', alignItems: 'center', marginLeft: 5}}>
+            <Icon name="calendar" size={25} />
+            <Text style={{marginLeft: 5}}>{movieDetails?.release_date}</Text>
+          </View>
+        </View>
+      </View>
+      <View style={styles.details}>
+        <Text style={styles.heading}>OverView</Text>
+        <Text>{movieDetails?.overview}</Text>
+
+        <View>
+          <Text style={styles.heading}>Production Companies</Text>
+          <FlatList
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data={movieDetails?.production_companies}
+            renderItem={({item, index}) => <Cast item={item} />}
+          />
+        </View>
+        <View>
+          <Text style={styles.heading}>Production Countries</Text>
+          <FlatList
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data={movieDetails?.production_countries}
+            renderItem={({item, index}) => (
+              <Text style={{paddingRight: 20}}>{item?.name}</Text>
+            )}
+          />
+        </View>
+      </View>
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    wallpaper: {
-        width: '100%',
-        height: 340
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: '600',
-        width: '80%',
-        padding: 10,
-        color: '#000'
-    },
-    details: {
-        marginTop: 90,
-        padding: 10,
-        borderTopRightRadius: 20,
-        borderTopLeftRadius: 20
-    },
-    head: {
-        flexDirection: 'row',
-        position: 'absolute',
-        width: '100%',
-        marginTop: 280,
-        padding: 10,
-        alignItems: 'flex-end'
-    },
-    cardImage: {
-        width: 100,
-        height: 150,
-        borderRadius: 10,
-        elevation: 5
-    },
-    heading: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginVertical: 15,
-        color: '#000',
-    },
-    iconcontainer: {
-        backgroundColor: '#ffffff50',
-        height: 30,
-        width:30,
-        borderRadius: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        margin: 20
-    }
-})
+  container: {
+    flex: 1,
+  },
+  wallpaper: {
+    width: '100%',
+    height: 340,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    width: 250,
+    padding: 10,
+    color: '#000',
+  },
+  details: {
+    marginTop: 90,
+    padding: 10,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+  },
+  head: {
+    flexDirection: 'row',
+    position: 'absolute',
+    width: '100%',
+    marginTop: 280,
+    padding: 10,
+    alignItems: 'flex-end',
+  },
+  cardImage: {
+    width: 100,
+    height: 150,
+    borderRadius: 10,
+    elevation: 5,
+  },
+  heading: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginVertical: 15,
+    color: '#000',
+  },
+  iconcontainer: {
+    backgroundColor: '#ffffff50',
+    height: 30,
+    width: 30,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    margin: 20,
+  },
+});
 
-export default MovieDetails
+export default MovieDetails;
